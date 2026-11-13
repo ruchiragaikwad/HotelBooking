@@ -1,0 +1,52 @@
+# Local environment files and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+.envrc
+secrets/
+credentials/
+credentials.json
+secrets.json
+*.secret
+*.secrets
+
+# Private keys, certificates, and keystores
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+
+# Local cloud and tool credentials
+.aws/
+.azure/
+.gcloud/
+.npmrc
+
+# Local-only application configuration
+**/application-local.properties
+**/application-local.yml
+**/application-local.yaml
+
+# Build output, dependencies, test reports, and logs
+backend/target/
+frontend/node_modules/
+frontend/dist/
+coverage/
+*.class
+*.log
+*.tmp
+*.swp
+
+# IDE and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
