@@ -1,6 +1,6 @@
 # Backend API
 
-Java 17 / Spring Boot 3.5.16 project. Flyway manages the database schema, and Spring Data JPA maps database rows to Java objects. Migrations V1-V3 create the hotel catalogue and booking tables and seed sample hotels.
+Java 17 / Spring Boot 3.5.16 project. Flyway manages the database schema, and Spring Data JPA maps database rows to Java objects. Migrations V1-V5 create the hotel catalogue and booking tables, seed 15 hotels across five cities, and provide expanded hotel descriptions.
 
 Configure the database and environment variables first using `../database/README.md`. Then run from this directory in PowerShell or the VS Code terminal:
 
@@ -30,7 +30,7 @@ Example response from the list endpoint:
     "id": 1,
     "name": "Aurora Bay Resort",
     "location": "Goa",
-    "description": "A relaxed coastal resort close to the beach, with a quiet garden courtyard.",
+    "description": "A relaxed coastal retreat designed for unhurried beach days. Guests can return from the shore to a quiet garden courtyard, take a swim in the pool, and start the morning with breakfast. Wi-Fi is available for planning the next outing or staying connected.",
     "amenities": ["Beach access", "Breakfast", "Swimming pool", "Wi-Fi"],
     "nightlyPrice": 6500.00,
     "roomCapacity": 24
@@ -57,4 +57,4 @@ Example create request:
 }
 ```
 
-Check-in uses `BOOKING_TIME_ZONE` (default `Asia/Kolkata`). Stays are half-open `[check-in, check-out)`, so adjacent stays are permitted. See `docs/DESIGN.md` for booking and database locking details.
+Check-in uses `BOOKING_TIME_ZONE` (default `Asia/Kolkata`). Stays are half-open `[check-in, check-out)`, so adjacent stays are permitted. See `docs/DESIGN.md` for booking and database locking details. Hotel card images are frontend static assets mapped by hotel name.

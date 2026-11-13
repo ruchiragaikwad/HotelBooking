@@ -59,31 +59,52 @@ class HotelBookingApplicationTests {
     }
 
     @Test
-    void repositoryListsFiveSeededHotelsAndSearchesLocationWithoutCaseSensitivity() {
-        assertThat(hotelRepository.findAllByOrderByNameAsc()).hasSize(5);
+    void repositoryListsFifteenSeededHotelsAndSearchesLocationWithoutCaseSensitivity() {
+        assertThat(hotelRepository.findAllByOrderByNameAsc()).hasSize(15);
         assertThat(hotelRepository.findByLocationContainingIgnoreCaseOrderByNameAsc("gOA"))
                 .extracting(Hotel::getName)
-                .containsExactly("Aurora Bay Resort");
+                .containsExactly("Aurora Bay Resort", "Monsoon Sands Hotel", "Palm Cove Hideaway");
     }
 
     @Test
     void hotelListApiReturnsHotelDetails() throws Exception {
         mockMvc.perform(get("/api/hotels"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(5)))
-                .andExpect(jsonPath("$[0].name", is("Aurora Bay Resort")))
-                .andExpect(jsonPath("$[0].location", is("Goa")))
+                .andExpect(jsonPath("$.length()", is(15)))
+                .andExpect(jsonPath("$[0].name", is("Amber Courtyard Hotel")))
+                .andExpect(jsonPath("$[0].location", is("Jaipur")))
                 .andExpect(jsonPath("$[0].amenities[0]").exists())
-                .andExpect(jsonPath("$[0].nightlyPrice").value(6500.0));
+                .andExpect(jsonPath("$[0].nightlyPrice").value(6300.0));
     }
 
     @Test
     void locationSearchApiReturnsMatchingHotels() throws Exception {
         mockMvc.perform(get("/api/hotels").param("location", "mUm"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(1)))
+                .andExpect(jsonPath("$.length()", is(3)))
                 .andExpect(jsonPath("$[0].name", is("Citylight Grand")))
                 .andExpect(jsonPath("$[0].location", is("Mumbai")));
+    }
+
+    @Test
+    void eachSeededCityHasAtLeastThreeHotels() {
+        var hotels = hotelRepository.findAllByOrderByNameAsc();
+        assertThat(hotels).hasSize(15);
+        for (String city : Set.of("Goa", "Manali", "Mumbai", "Udaipur", "Jaipur")) {
+            assertThat(hotels.stream().filter(hotel -> hotel.getLocation().equals(city)).count())
+                    .as("hotels seeded for %s", city).isGreaterThanOrEqualTo(3);
+        }
+    }
+
+    @Test
+    void seededHotelDescriptionsProvideMoreThanShortSummaries() {
+        var hotels = hotelRepository.findAllByOrderByNameAsc();
+        assertThat(hotels).hasSize(15);
+        for (Hotel hotel : hotels) {
+            assertThat(hotel.getDescription())
+                    .as("description for %s", hotel.getName())
+                    .hasSizeGreaterThan(120);
+        }
     }
 
     @Test

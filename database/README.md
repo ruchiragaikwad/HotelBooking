@@ -1,6 +1,6 @@
 # Database setup
 
-The application uses **Flyway** as its only schema-management tool. Versioned migrations live in `migrations/`; Maven packages them into the backend so Flyway applies them when Spring Boot starts. Migration `V1` creates the hotel tables, `V2` inserts five sample hotels and their amenities, and `V3` creates the bookings table and its indexes and constraints. Keeping seed data in a versioned migration makes it reproducible on a new database without introducing a second schema/seed mechanism.
+The application uses **Flyway** as its only schema-management tool. Versioned migrations live in `migrations/`; Maven packages them into the backend so Flyway applies them when Spring Boot starts. Migration `V1` creates the hotel tables, `V2` inserts five initial sample hotels and their amenities, `V3` creates the bookings table and its indexes and constraints, `V4` adds two more hotels to each of the five sample cities, and `V5` expands the descriptions of all 15 hotel records. A fresh database therefore starts with 15 hotels, three each in Goa, Manali, Mumbai, Udaipur and Jaipur. Keeping seed data in a versioned migration makes it reproducible on a new database without introducing a second schema/seed mechanism.
 
 ## Create the local database
 
@@ -33,7 +33,7 @@ Replace `root` with the MySQL username you intend to use if needed. Start the ba
 .\mvnw.cmd spring-boot:run
 ```
 
-On startup, Flyway applies any pending migration and records it in `flyway_schema_history`. Hibernate checks that the database matches the entity mapping; it does not create or change tables. The connection values in `.env.example` are placeholders for reference only; Spring Boot does not load that file automatically. If you already applied V1 and V2, starting the app after Phase 4 applies only V3 and preserves the existing schema and hotel data.
+On startup, Flyway applies any pending migration and records it in `flyway_schema_history`. Hibernate checks that the database matches the entity mapping; it does not create or change tables. The connection values in `.env.example` are placeholders for reference only; Spring Boot does not load that file automatically. If you already applied earlier migrations, starting the app applies only the pending migrations, preserving existing tables and hotel rows while V4 adds the additional sample hotels.
 
 ## Automated persistence test
 
